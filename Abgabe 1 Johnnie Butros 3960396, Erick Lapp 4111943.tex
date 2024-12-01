@@ -1,0 +1,241 @@
+\documentclass{article}
+\usepackage{blindtext}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{booktabs} 
+\usepackage{tabularx}            
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{array} 
+\usepackage{titlesec}
+\usepackage{amsmath, amssymb}
+\usepackage{ulem}
+\usepackage{hyperref}
+\title{Abgabe 1 für Computergestützte Methoden}
+\author{Gruppe (36), (Johnnie Butros 3960396, Erick Lapp 4111943)}
+\date{01.12.2024}
+\renewcommand*\contentsname{Inhaltsverzeichnis}
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Der zentrale Grenzwertsatz}
+
+Der zentrale Grenzwertsatz (ZGS) ist ein fundamentales Resultat der Wahrscheinlichkeitstheorie, das die Verteilung von Summen unabhängiger, identisch verteilter (i.i.d.) Zufallsvariablen (ZV) beschreibt. Er besagt, dass unter bestimmten Voraussetzungen die Summe einer großen Anzahl solcher ZV annähernd
+ normalverteilt ist, unabhängig von der Verteilung der einzelnen ZV. Dies ist besonders nützlich, da die Normalverteilung gut untersucht und mathematisch
+ handhabbar ist.
+
+
+\subsection{Aussage}
+ 
+ Sei \( X_1, X_2, \dots, X_n \) eine Folge von i.i.d. ZV mit dem Erwartungswert \(\mu = \mathbb{E}(X_i)\) und der Varianz \(\sigma^2 = \mathrm{Var}(X_i)\), wobei \(0 < \sigma^2 < \infty\) gelte. Dann konvergiert die standardisierte Summe \(Z_n\) dieser ZV für \(n \to \infty\) in Verteilung gegen eine
+ Standardnormalverteilung:\hyperref[sec:3]{1}
+
+\begin{align}
+Z_n = \frac{\sum_{i=1}^n X_i - n\mu}{\sigma \sqrt{n}} \xrightarrow{d} \mathcal{N}(0,1).      \label{sec:1}
+\end{align}
+Das bedeutet, dass für große \(n\) die Summe der ZV näherungsweise normalverteilt ist mit Erwartungswert \(n\mu\) und Varianz \(n\sigma^2\).
+
+\begin{align}
+\sum_{i=1}^n X_i \sim \mathcal{N}(n\mu, n\sigma^2).       \label{sec:2}
+\end{align}
+
+
+\subsection{Erklärung der Standardisierung}
+
+Um die Summe der ZV in eine Standardnormalverteilung zu transformieren, subtrahiert man den Erwartungswert \(n\mu\) und teilt durch die Standardabweichung \(\sigma\sqrt{n}\). Dies führt zu der obigen Formel (\hyperref[sec:1]{1}). Die Darstellung (\hyperref[sec:2]{2}) ist für \(n \to \infty\) nicht wohldefiniert. 
+
+
+\subsection{Anwendungen}
+ 
+Der ZGS wird in vielen Bereichen der Statistik und der Wahrscheinlichkeits
+theorie angewendet. Typische Beispiele sind:
+
+
+\begin{itemize}
+    \item \textbf{Schätzen von Mittelwerten:} Beim Ziehen von Stichproben aus einer Grundgesamtheit kann der Stichprobenmittelwert durch den ZGS als näherungsweise normalverteilt betrachtet werden, wenn die Stichprobengröße groß genug ist.
+\item \textbf{Monte-Carlo-Simulationen:} Der ZGS wird verwendet, um Summen oder Durchschnittswerte von simulierten Zufallsvariablen zu approximieren.
+\end{itemize}
+\noindent
+\rule[0.5ex]{0.5\textwidth}{0.4pt} \\[1ex]
+
+\label{sec:3}Der zentrale Grenzwertsatz hat verschiedene Verallgemeinerungen. Eine davon ist der \textbf{Lindeberg-Feller-Zentrale-Grenzwertsatz} \cite[Seite 328]{Achim_Klenke}, der schwächere Bedingungen an die Unabhängigkeit und die identische Verteilung der ZV stellt.
+
+
+\newpage
+
+\section{Aufgabe 1: Datenhaltung \& -aufbereitung }
+
+
+\subsection{Thema Datenverarbeitung}
+\subsubsection{}
+
+Die Daten sind in 12 Spalten aufgeteilt die für group, station, date, day\_of\_year, day\_of\_week, month\_of\_year, precipitation, windspeed, min\_temperature, average\_temperature, max\_temperature und count stehen und somit unsere Attribute sind. Unsere Gruppe ist die Nummer 36 und demnach ist die Station, die wir betrachten die Centre St \& Chambers St. Wir betrachten den Zeitraum von 1 Jahr und starten am 01.01.2023 bis 31.12.2023. Wir erkennen auch das Daten wie day\_of\_week, day\_of\_month und month\_of\_year schon in date erkennbar sind.
+
+\subsubsection{}
+
+Die CSV in Excel importieren, um durch Trennzeichen für jede Spalte ein Attribut zu bekommen. Dadurch wird es viel geordneter und wir können leichter unsere gesuchten Werte finden.
+
+\subsubsection{}
+
+Wir gehen in Excel auf die Spalte group und wählen nur die mit der 36 aus, um nur die Daten zu bekommen die für unsere Gruppe relevant sind. Mit derselben Methode können wir die anderen Spalten von fehlenden oder unrealistischen Werten bereinigen. Die höchste mittlere Temperatur in Excel berechnen durch =MAX(J12750:J13112) welcher 83 ist und da es in Fahrenheit noch ist, müssen wir umrechnen in Celsius (83-32)*(5/9)=28,33333333.
+
+\subsection{Thema Datenhaltung}
+\subsubsection{}
+
+SQLite ist flexibel, was die Definition von Datentypen betrifft. Im Gegensatz zu vielen anderen relationalen DBMS erlaubt SQLite eine breite Flexibilität bei der Wahl der Datentypen, die bei der Erstellung von Tabellen verwendet werden.
+
+Hier sind einige der gängigsten Datentypen in SQLite:
+
+\textbf{NULL:}
+
+\begin{itemize}
+  
+\item \textbf{}Repräsentiert einen NULL-Wert (keinen Wert oder unbekannten Wert).
+
+\end{itemize}
+
+\textbf{INTEGER:}
+
+\begin{itemize}
+
+\item \textbf{}Wird verwendet, um Ganzzahlen zu speichern.
+
+\item \textbf{}SQLite verwendet in der Regel die INTEGER-Typen für Datentypen wie int, smallint oder bigint in anderen Systemen.
+
+\item \textbf{}Es können Ganzzahlen unterschiedlicher Größe gespeichert werden, wobei SQLite den Typ dynamisch anpasst.
+
+\end{itemize}
+
+\textbf{REAL:}
+
+\begin{itemize}
+
+\item \textbf{}Wird verwendet, um Fließkommazahlen (mit Dezimalstellen) zu speichern.
+
+\item \textbf{}Entspricht den Datentypen float oder double in anderen Systemen.
+
+\end{itemize}
+
+\textbf{TEXT:}
+
+\begin{itemize}
+
+\item \textbf{}Wird verwendet, um Textzeichenfolgen zu speichern.
+
+\item \textbf{}Speichert beliebige Textdaten, von kurzen Zeichenketten bis hin zu großen Textblöcken.
+
+\end{itemize}
+
+\textbf{BLOB:}
+
+\begin{itemize}
+
+\item \textbf{}Wird verwendet, um Binärdaten zu speichern (z. B. Bilder oder Dateien).
+
+\item \textbf{}BLOBs können beliebige binäre Daten speichern und werden als Rohdaten behandelt.
+
+\end{itemize}
+
+\subsubsection{}
+
+\textbf{Datenbank Schema entwerfen}
+
+\section*{1.Normalform = Trennung nicht-atomarer Attribute}
+
+\renewcommand{\arraystretch}{1.2} 
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|l|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Station}               & \textbf{Date}   & \textbf{Day\_of\_Year} & \textbf{Day\_of\_Week} & \textbf{Month\_of\_Year} & \textbf{Precipitation} & \textbf{Windspeed} & \textbf{Min\_Temp.} & \textbf{Avg\_Temp.} & \textbf{Max\_Temp.} & \textbf{Count} \\ \hline
+Centre St \& Chambers St & 01.01.2023 & 1               & 1               & 1                 & 0                 & 1007          & 42                  & 50               & 56               & 164 \\ \hline
+\end{tabular}
+} 
+
+\section*{2.Normalform= Auftrennung in mehrere Tabellen und
+Fremdschlüssel-Beziehungen mit passenden Abhängigkeiten
+}
+
+\subsection*{Tabelle: Fahrradverleih}
+
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|c|c|l|c|c|c|c|c|c|}
+\hline
+\textbf{\textcolor{blue}{ID\#}} & \textbf{\textcolor{green}{StationID\#}} & \textbf{Date}   & \textbf{Precipitation} & \textbf{Windspeed} & \textbf{Min\_Temp} & \textbf{Avg\_Temp} & \textbf{Max\_Temp} & \textbf{Count} \\ \hline
+
+\end{tabular}
+} 
+
+\subsection*{Tabelle: Station}
+
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|c|l|}
+\hline
+\textbf{\textcolor{blue}{StationID\#}} & \textbf{Station}                  \\ \hline
+
+\end{tabular}
+} 
+
+\textbf{Primärschlüssel in \textcolor{blue}{Blau}}
+
+\textbf{Schlüsselattribute in \textcolor{green}{Grün}}
+
+\subsubsection{}
+
+sql ='''CREATE TABLE STATION(
+   
+ID INTEGER PRIMARY KEY,
+ 
+  Station TEXT NOT NULL
+
+)'''
+
+sql ='''CREATE TABLE FAHRRADVERLEIH(
+ 
+ ID INTEGER PRIMARY KEY,
+  
+StationID INTEGER,
+  
+date TEXT NOT NULL,
+ 
+ Percipitation INTEGER NOT NULL,
+  
+windspeed INTEGER NOT NULL,
+ 
+ min\_temperature INTEGER NOT NULL,
+ 
+average\_temperature INTEGER NOT NULL,
+ 
+ max\_temperature INTEGER NOT NULL,
+ 
+ count INTEGER NOT NULL,
+  
+ FOREIGN KEY(StationID) REFERENCES STATION(ID)
+
+)'''
+
+
+\subsubsection{}
+
+Durch diesen Befehl können wir unsere csv Datei importieren und durch unsere definierten Tabellen wiedergeben lassen.
+
+import pandas as pd
+
+df = pd.read\_csv('bike\_sharing\_data\_(with\_NAs).csv')
+
+print(df)
+
+\subsubsection{}
+
+\newpage
+\renewcommand{\refname}{Literatur}
+\begin{thebibliography}{9}
+    \bibitem{Achim_Klenke} 
+ Achim Klenke. \emph{Wahrscheinlichkeitstheorie.} Springer, 3. edition, 2013.
+\end{thebibliography}
+
+
+\end{document}
